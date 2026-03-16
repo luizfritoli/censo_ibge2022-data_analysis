@@ -1,213 +1,48 @@
-# -- Carregando o Tidyverse e Ggcorrplot --
+# -- Instalando e carregando o Tidyverse e Scales --
 ```{r}
 # install.packages("tidyverse")
 library(tidyverse)
-# install.packages("ggcorrplot")
-library(ggcorrplot)
+# install.packages("scales")
+library(scales)
 ```
 
-# -- Carregando os dados tratados --
+# -- Pegando os dados dos arquivos .csv --
 ```{r}
-dados = read_csv("../data/clean/starwars_clean.csv")
+dados <- list(
+  deficiencias = read_csv2("../data/original/censo_2022_deficiencia_e_autismo.csv"),
+  alfabetizacao = read_csv2("../data/original/censo_2022_alfabetizacao.csv"),
+  crescimento = read_csv2("../data/original/censo_2022_crescimento_pop.csv"),
+  nomes = read_csv2("../data/original/censo_2022_nomes_populares.csv"),
+  transporte = read_csv2("../data/original/censo_2022_meios_transporte.csv"),
+  cor_raca = read_csv2("../data/original/censo_2022_população_cor_raca.csv"),
+  religiao = read_csv2("../data/original/censo_2022_religiao.csv"),
+  piramide = read_csv2("../data/original/censo_2022_piramide_etaria.csv"),
+  sexo = read_csv2("../data/original/censo_2022_populacao_sexo.csv"),
+  favelas = read_csv2("../data/original/censo_2022_populacao_favelas.csv")
+)
 ```
 
-# -- Analisando correlação entre "altura" e "massa" --
+# -- Confirmando tipos --
 ```{r}
-
-correl = dados %>%
-  select(altura, massa) %>%
-  cor(use="complete.obs")
-
-correl_filt = dados %>%
-  filter(massa < 1000) %>% 
-  select(altura, massa) %>%
-  cor(use="complete.obs")
-
-correl_no_outlier = ggcorrplot(correl_filt,
-           lab=TRUE,
-           lab_size = 3.5)
-
-correl_outlier = ggcorrplot(correl,
-           lab=TRUE,
-           lab_size = 3.5)
-
-ggsave(
-  filename = "../assets/correl_no_outlier.png",
-  plot = correl_no_outlier,
-  width = 8,
-  height = 5,
-  dpi = 300
-)
-
-ggsave(
-  filename = "../assets/correl_outlier.png",
-  plot = correl_outlier,
-  width = 8,
-  height = 5,
-  dpi = 300
-)
-
-correl_no_outlier
-correl_outlier
+glimpse(dados$deficiencias)
+glimpse(dados$alfabetizacao)
+glimpse(dados$crescimento)
+glimpse(dados$nomes)
+glimpse(dados$transporte)
+glimpse(dados$cor_raca)
+glimpse(dados$religiao)
+glimpse(dados$piramide)
+glimpse(dados$sexo)
+glimpse(dados$favelas)
 ```
 
-# -- Confirmando existência de correlação com gráfico de dispersão --
+# -- Analisando nomes mais populares --
 ```{r}
-
-disp_outlier = dados %>%
-  ggplot(aes(x=altura, y=massa)) +
-  geom_point() + geom_smooth(method="lm")
-
-disp_no_outlier = dados %>%
-  filter(massa < 1000) %>%
-  ggplot(aes(x=altura, y=massa)) +
-  geom_point() + geom_smooth(method="lm") +
-  geom_vline(xintercept=165, linetype="dotted") +
-  geom_hline(yintercept=70, linetype="dotted")
-
-ggsave(
-  filename = "../assets/disp_outlier.png",
-  plot = disp_outlier,
-  width = 10,
-  height = 5,
-  dpi = 300
-)
-
-ggsave(
-  filename = "../assets/disp_no_outlier.png",
-  plot = disp_no_outlier,
-  width = 10,
-  height = 5,
-  dpi = 300
-)
-
-disp_outlier
-disp_no_outlier
+dados$nomes %>%
+  ggplot(aes(x=reorder(Nome,Pessoas), y=Pessoas, fill=Nome)) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(
+    labels = scales::label_number(big.mark = ".", decimal.mark = ",")
+  ) + scale_fill_brewer(palette="Paired")
 ```
 
-# -- Analisando proporções de gêneros --
-```{r}
-genero = dados %>%
-  group_by(genero) %>%
-  summarise(n = n())
-
-dados %>%
-  filter(genero %in% c("feminine", "masculine")) %>%
-  group_by(genero, cor_olho) %>%
-  summarise(n = n())
-
-proporcao_genero = genero %>%
-  mutate(genero = case_match(genero,
-                             "masculine" ~ "Masculino",
-                             "feminine" ~ "Feminino",
-                             "not specified" ~ "Não especificado"
-                             ),
-         percent = (n / sum(n)) * 100,
-         p_label = paste0(n, " (", round(percent, 1), "%)")
-         ) %>%
-  ggplot(aes(x = "", y = n, fill = genero)) +
-  geom_bar(stat="identity", width=0.5) +
-  coord_flip() +
-  geom_text(aes(label = p_label), 
-            position = position_stack(vjust = 0.5)) +
-  theme_void() +
-  labs(
-    title = "Proporção dos gêneros",
-    fill = "Gêneros"
-  )
-
-ggsave(
-  filename = "../assets/proporcao_genero.png",
-  plot = proporcao_genero,
-  width = 9,
-  height = 5,
-  dpi = 300
-)
-
-proporcao_genero
-```
-
-# -- Analisando frequência de mundos natais --
-```{r}
-dados_resumidos = dados %>%
-  filter(!is.na(mundo_natal)) %>%
-  group_by(mundo_natal) %>%
-  summarise(n = n()) %>%
-  arrange(desc(n)) %>%
-  slice_max(n, n = 8)
-
-freq_origem_coluna = dados_resumidos %>%
-  ggplot(aes(x=reorder(mundo_natal, n), y = n, fill=mundo_natal)) +
-  geom_bar(stat="identity") +
-  scale_fill_manual(values = c(
-    "Alderaan" = "#A8D0E6",
-    "Corellia" = "#F7CCAC",
-    "Coruscant" = "#C6E2E9",
-    "Kamino" = "#F1E0AC",
-    "Kashyyyk" = "#E1BBEE",
-    "Mirial" = "#FFD5E5",
-    "Naboo" = "#E5989B",
-    "Ryloth" = "#D4E09B",
-    "Tatooine" = "#DBE3E5"
-  )) + theme_minimal() + labs(
-    title = "Mundo natais com maior frequência",
-    x = "Mundo",
-    y = "Frequência",
-    fill = "Mundos"
-  )
-
-ggsave(
-  filename = "../assets/freq_origem_coluna.png",
-  plot = freq_origem_coluna,
-  width = 9,
-  height = 5,
-  dpi = 300
-)
-
-freq_origem_coluna
-```
-
-# -- Analisando frequência de espécies --
-```{r}
-especies_resumido = dados %>%
-  filter(especie != "not specified") %>%
-  group_by(especie) %>%
-  summarise(n = n()) %>%
-  arrange(desc(n)) %>%
-  slice_max(n, n = 9, with_ties = F)
-
-freq_especies_barra = especies_resumido %>%
-  mutate(especie = case_match(especie,
-                              "Human" ~ "Humano",
-                              .default = especie
-                              )) %>%
-  ggplot(aes(x=reorder(especie, n), y = n, fill=especie)) +
-  geom_bar(stat="identity") +
-  labs(
-    title = "Frequência do número de espécies",
-    x = "Espécies",
-    y = "Frequência",
-    fill = "Espécies"
-  ) +
-  scale_fill_manual(values = c(
-    "Humano"    = "#2C3E50",
-    "Droid"    = "#7F8C8D", 
-    "Aleena"   = "#E74C3C", 
-    "Gungan"   = "#27AE60", 
-    "Kaminoan" = "#3498DB", 
-    "Mirialan" = "#F1C40F", 
-    "Twi'lek"  = "#9B59B6", 
-    "Wookiee"  = "#A04000", 
-    "Zabrak"   = "#E67E22"  
-  )) + coord_flip()
-
-ggsave(
-  filename = "../assets/freq_especies_barra.png",
-  plot = freq_especies_barra,
-  width = 9,
-  height = 5,
-  dpi = 300
-)
-
-freq_especies_barra
-```
