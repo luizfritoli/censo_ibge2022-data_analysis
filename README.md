@@ -3,8 +3,8 @@
 Análise exploratória sobre características da população brasileira, utilizando dados
 fornecidos pelo IBGE no Censo 2022, foram feitos tratamento e análise.
 
-Todos os dados completos em: https://censo2022.ibge.gov.br/panorama/?localidade=BR. 
-
+Todos os dados completos do IBGE em: https://censo2022.ibge.gov.br/panorama/?localidade=BR. 
+Dados de referência retirados de: https://theglobaleconomy.com/
    -> 
    
    -> 
@@ -20,6 +20,7 @@ Todos os dados completos em: https://censo2022.ibge.gov.br/panorama/?localidade=
 ## *Objetivos*
 
 - Realizar análise sobre características da população com base no Censo 2022;
+- Comparar informações com outros países, se possível;
 - Gerar conclusões com as informações obtidas;
 - Documentar passos, conclusões e considerações;
 - Apresentar o conhecimento adquirido usando dashboards.
@@ -58,3 +59,27 @@ Todos os dados completos em: https://censo2022.ibge.gov.br/panorama/?localidade=
 
    É válido comentar que dentre os 10 nomes mais populares, há uma concentração masculina com 8 nomes,
    contra 2 nomes femininos (os nomes femininos são mais variados?). 
+
+2. **Alfabetização**
+
+   O Brasil, com base no Censo 2022, possui um índice de alfabetização de ~93%. A métrica de alfabetização
+   está sendo interpretada como formular e escrever frases simples. É relevante registrar que o Brasil é
+   um país em desenvolvimento.
+ 
+   Ainda assim, optei por buscar dados de alfabetização aproximados de países considerados desenvolvidos
+   e em desenvolvimento. O resultado foi interessante, pois os países considerados desenvolvidos em sua
+   maioria, possuem uma taxa de alfabetização superior à 96%, muitas vezes chegando até 99%.
+
+   Entre países ainda em desenvolvimento, o Brasil possui um índice satisfatório. Mas neste caso, países
+   vizinhos como Argentina e Uruguai - também em desenvolvimento - têm números de alfabetização semelhantes
+   aos países considerados desenvolvidos.
+
+   Observação: Índia e África do Sul foram retirados como exemplos, mas não representam a totalidade de países
+   em desenvolvimento. Para mais informações de países específicos, segue o site utilizado para apoio:
+   https://theglobaleconomy.com/.
+
+   É plausível questionar o motivo de Argentina e Uruguai, países vizinhos do Brasil e em desenvolvimento, possuem
+   índices maiores que o do Brasil. Por mais que 4% ou 5% não sejam números expressivos à primeira vista, estes
+   números representam milhões de pessoas.
+
+   O Brasil enfrenta dificuldades na educação básica? Se sim, onde se encontra o erro? 
