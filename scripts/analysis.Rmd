@@ -6,9 +6,9 @@ library(tidyverse)
 library(scales)
 ```
 
-# -- Pegando os dados dos arquivos .csv --
+# -- Pegando os dados da população brasileira dos arquivos .csv --
 ```{r}
-dados <- list(
+dados = list(
   deficiencias = read_csv2("../data/original/censo_2022_deficiencia_e_autismo.csv"),
   alfabetizacao = read_csv2("../data/original/censo_2022_alfabetizacao.csv"),
   crescimento = read_csv2("../data/original/censo_2022_crescimento_pop.csv"),
@@ -19,6 +19,14 @@ dados <- list(
   piramide = read_csv2("../data/original/censo_2022_piramide_etaria.csv"),
   sexo = read_csv2("../data/original/censo_2022_populacao_sexo.csv"),
   favelas = read_csv2("../data/original/censo_2022_populacao_favelas.csv")
+)
+```
+
+# -- Dados de referência --
+```{r}
+refs = list(
+  alfabetizacao = read_csv("../data/refs/alfabetizacao_paises.csv"),
+  deficiencia = read_csv2("../data/refs/censo_2010_deficiencia.csv")
 )
 ```
 
@@ -38,11 +46,66 @@ glimpse(dados$favelas)
 
 # -- Analisando nomes mais populares --
 ```{r}
-dados$nomes %>%
+plot_nomes_populares = dados$nomes %>%
   ggplot(aes(x=reorder(Nome,Pessoas), y=Pessoas, fill=Nome)) +
   geom_bar(stat = "identity") +
   scale_y_continuous(
     labels = scales::label_number(big.mark = ".", decimal.mark = ",")
-  ) + scale_fill_brewer(palette="Paired")
+  ) + scale_fill_brewer(palette="Paired") + labs(
+    title = "Nomes mais populares",
+    y = "Quantidade pessoas",
+    x = "Nomes"
+  ) + theme(
+    legend.position = "none"
+  )
 ```
 
+# -- Analisando alfabetização --
+```{r}
+plot_alfabetizados = dados$alfabetizacao %>%
+  ggplot(aes(x=Situação, y=Percentual, fill=Situação)) +
+  geom_bar(stat="identity") + scale_fill_brewer(palette="Set3") + theme(
+    legend.position = "none"
+  ) + labs(
+    title = "Percentual de alfabetizados no Brasil"
+  )
+
+alfabetizados_brasil <- dados$alfabetizacao %>%
+  filter(Situação == "Alfabetizados",
+         `Recorte Geográfico` == "Brasil") %>%
+  select(Percentual, `Recorte Geográfico`)
+
+comparacao <- bind_rows(alfabetizados_brasil, refs$alfabetizacao)
+
+comparacao %>%
+  ggplot(aes(x=reorder(`Recorte Geográfico`, Percentual), y=Percentual,
+             fill=`Recorte Geográfico`,
+             label=paste0(Percentual, "%"))) +
+  geom_bar(stat="identity") +
+  geom_label(
+    size=3,
+    alpha=0,
+    label.size=0,
+    label.padding = unit(0.25, "lines"),
+    color="black",
+    family="sans",
+    fontface="bold",
+    nudge_y=-4
+  ) +
+  labs(x = NULL, 
+       y = "Percentual (%)", 
+       title = "Percentual de alfabetização por países") +
+  scale_fill_brewer(palette="Set3") +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
+  coord_flip() +
+  theme_minimal() +
+  theme(
+    legend.position="none"
+  ) 
+```
+
+# -- Comparando percentual de pessoas com deficiência do Censo 2010 vs 2022 --
+```{r}
+dados$deficiencias
+refs$deficiencia
+```
