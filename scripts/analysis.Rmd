@@ -26,7 +26,8 @@ dados = list(
 ```{r}
 refs = list(
   alfabetizacao = read_csv("../data/refs/alfabetizacao_paises.csv"),
-  deficiencia = read_csv2("../data/refs/censo_2010_deficiencia.csv")
+  deficiencia = read_csv2("../data/refs/censo_2010_deficiencia.csv"),
+  crescimento = read_csv2("../data/refs/crescimento_pop.csv")
 )
 ```
 
@@ -75,7 +76,7 @@ alfabetizados_brasil <- dados$alfabetizacao %>%
          `Recorte Geográfico` == "Brasil") %>%
   select(Percentual, `Recorte Geográfico`)
 
-comparacao <- bind_rows(alfabetizados_brasil, refs$alfabetizacao)
+comparacao = bind_rows(alfabetizados_brasil, refs$alfabetizacao)
 
 comparacao %>%
   ggplot(aes(x=reorder(`Recorte Geográfico`, Percentual), y=Percentual,
@@ -108,4 +109,35 @@ comparacao %>%
 ```{r}
 dados$deficiencias
 refs$deficiencia
+```
+
+# -- Analisando crescimento populacional --
+```{r}
+
+unique(dados$crescimento$`Ano da pesquisa`)
+
+dados$crescimento %>%
+  ggplot(aes(x=`Ano da pesquisa`,y=`População(pessoas)`, group=1)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  scale_y_continuous(
+    labels = scales::label_number(big.mark = ".", decimal.mark = ",")
+  ) +
+  labs(
+    title = "Crescimento da população brasileira ao longo dos censos",
+    x = "Ano",
+    y = "População"
+  ) +
+  theme_minimal()
+
+comparacao_cresc = bind_rows(dados$crescimento, refs$crescimento)
+
+crescimento_linhas = comparacao_cresc %>%
+  ggplot(aes(x=`Ano da pesquisa`, y=`População(pessoas)`,color=`Recorte Geográfico`)) +
+  geom_line() + geom_point() +
+  scale_y_continuous(
+    labels = scales::label_number(big.mark = ".", decimal.mark = ",") 
+  ) + theme_minimal()
+
+crescimento_linhas
 ```

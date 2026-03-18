@@ -111,4 +111,7 @@ Dados de referência retirados de: https://theglobaleconomy.com/
    é um valor mais alinhado a critérios metodológicos mais restritivos, mas é um número considerado mais 
    próximo da realidade do que quase 1/4 da população ser deficiente.
    
+4. **Crescimento populacional**
+
+   Como esperado,
    
