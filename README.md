@@ -4,12 +4,10 @@ Análise exploratória sobre características da população brasileira, utiliza
 fornecidos pelo IBGE no Censo 2022, foram feitos tratamento e análise.
 
 Todos os dados completos do IBGE em: https://censo2022.ibge.gov.br/panorama/?localidade=BR. 
-Dados de referência retirados de: https://theglobaleconomy.com/
-   -> 
-   
-   -> 
-   
-   -> 
+Dados de referência retirados de: 
+- https://theglobaleconomy.com/ (Alfabetização)
+- https://www.asahi.com/ajw/articles/16030478 (Envelhecimento no Japão)
+- https://www.bbc.com/portuguese/geral-47132888 (Expectativa de vida de homens e mulheres)
 
 ## *Stack*
 - R;
@@ -32,7 +30,7 @@ Dados de referência retirados de: https://theglobaleconomy.com/
 
 ## *Estrutura*
 
-- `data/original`: Dados originais..
+- `data/original`: Dados originais;
 - `scripts/analysis.Rmd`: Script responsável pela análise dos dados usando gráficos e tabelas.
 
 ## *Considerações do tratamento dos dados*
@@ -113,5 +111,59 @@ Dados de referência retirados de: https://theglobaleconomy.com/
    
 4. **Crescimento populacional**
 
-   Como esperado,
+   A população brasileira, entre 1872 e 2022, teve um crescimento contínuo, nunca registrando
+   qualquer declínio. É possível que gere um pensamento de que "quanto mais pessoas um país 
+   tiver, o crescimento será exponencial", o que nem sempre é verdade, pois países têm inúmeros
+   contextos diferentes.
+   
+   Por isto, foram usados dois países como referência: Rússia e Japão. Russia com uma grande
+   quantidade de habitantes e Japão sendo referência em disciplina. Ambos os países estão
+   em declínio populacional.
+   
+   `Na Rússia:` A taxa de natalidade está caindo, pessoas estão tendo menos interesse
+   em ter filhos, e muito se deve ao custo de vida e insegurança financeira. Também, a alta
+   taxa de mortalidade, devido à problemas de saúde (o consumo de álcool e tabaco na Rússia 
+   é grande) e sistemas de saúde que enfrentam desafios em algumas regiões.
+   
+   `No caso do Japão:` Já é diferente, a população está envelhecendo. Aproximadamente 30% (!) 
+   da população japonesa possui 65 anos ou mais, e projeções indicam que essa porcentagem 
+   tende a aumentar. Somado a isto, japoneses estão tendo menos filhos por conta do custo de 
+   vida, estilo de vida onde há muita pressão no trabalho ou apenas falta de interesse.
+   
+   E o Brasil, com base no histórico dos Censos, não apresenta nenhum declínio no período
+   analisado, embora haja desaceleração no crescimento. É possível levantar a hipótese de que 
+   políticas públicas e garantias sociais (Bolsa Família, Pé de Meia, SUS podem ser exemplos) 
+   geram maior segurança para as famílias.
+   
+5. **Pirâmide etária**
+
+   No Brasil, com base nos dados coletados do Censo 2022, possui maior concentração na
+   quantidade de pessoas de meia-idade (35-44 anos). Pessoas com mais de 60 anos ainda
+   são minoria, mas as faixas não são tão curtas (o Brasil está começando a envelhecer?).
+   
+   `Informação:` Os dados indicam predominância feminina na população total.
+   
+   `Importante:` A ‘ponta’ da barra indica qual gênero possui maior valor naquela faixa etária. 
+   Quando a barra feminina (vermelha) ultrapassa a masculina (azul), há predominância feminina,
+   e vice-versa.
+   
+   Tendo isto em mente, é de extrema relevância apontar que, a partir de 25-29 anos o gênero
+   feminino passa maioria em todas as faixas (!), sendo um sinal de que mulheres tendem a viver 
+   mais do que os homens, o que pode ter relação com haver mais mulheres do que homens vivos
+   no país.
+   
+   Com estes fatos, há margem para questionamentos. Por que mulheres vivem mais do que os
+   homens? Os homens, historicamente, realizarem trabalhos considerados mais "perigosos" e
+   que envolvem força física poderia ser uma justificativa? Mulheres tendem a ter maior
+   cuidado com elas mesmas?
+   
+   Indo atrás de informações, o professor David Gems, do University College London, explicou
+   que embriões masculinos morrem em um ritmo maior que os embriões femininos. O que é um dos
+   vários fatores que ajudam a explicar a diferença de expectativa de vida.
+   
+   
+   
+   
+   
+   
    

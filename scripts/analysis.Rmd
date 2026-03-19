@@ -141,3 +141,32 @@ crescimento_linhas = comparacao_cresc %>%
 
 crescimento_linhas
 ```
+## -- Analisando sexos/pirâmide etária --
+```{r}
+dados$sexo %>%
+  ggplot(aes(x=Sexo, y=`População(pessoas)`, fill=Sexo)) +
+  geom_col() +
+  scale_y_continuous(
+    labels = scales::label_number(big.mark = ".", decimal.mark = ",") 
+  )
+dados$piramide %>%
+  mutate(
+    `Grupo de idade` = fct_rev(fct_inorder(`Grupo de idade`))
+    ) %>%
+  ggplot(aes(x=`Grupo de idade`)) +
+  geom_col(aes(y=`População feminina(pessoas)`, fill="Feminino"), alpha=0.5) + 
+  geom_col(aes(y=`População masculina(pessoas)`, fill="Masculino"), alpha=0.5) + 
+  scale_y_continuous(
+    labels = scales::label_number(big.mark = ".", decimal.mark = ",") 
+  ) + 
+  scale_fill_manual(values= c(
+    "Feminino"="blue",
+    "Masculino"="red" 
+  )) + coord_flip() +
+  labs(
+    title = "Pirâmide etária comparando masculino e feminino",
+    fill="Gêneros",
+    y="População"
+  )
+
+```
