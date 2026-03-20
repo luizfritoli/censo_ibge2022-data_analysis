@@ -2,6 +2,7 @@
 ```{r}
 # install.packages("tidyverse")
 library(tidyverse)
+library(readxl)
 # install.packages("scales")
 library(scales)
 ```
@@ -13,7 +14,6 @@ dados = list(
   alfabetizacao = read_csv2("../data/original/censo_2022_alfabetizacao.csv"),
   crescimento = read_csv2("../data/original/censo_2022_crescimento_pop.csv"),
   nomes = read_csv2("../data/original/censo_2022_nomes_populares.csv"),
-  transporte = read_csv2("../data/original/censo_2022_meios_transporte.csv"),
   cor_raca = read_csv2("../data/original/censo_2022_população_cor_raca.csv"),
   religiao = read_csv2("../data/original/censo_2022_religiao.csv"),
   piramide = read_csv2("../data/original/censo_2022_piramide_etaria.csv"),
@@ -27,7 +27,9 @@ dados = list(
 refs = list(
   alfabetizacao = read_csv("../data/refs/alfabetizacao_paises.csv"),
   deficiencia = read_csv2("../data/refs/censo_2010_deficiencia.csv"),
-  crescimento = read_csv2("../data/refs/crescimento_pop.csv")
+  crescimento = read_csv2("../data/refs/crescimento_pop.csv"),
+  favelas = read_csv2("../data/refs/populacao_favelas.csv"),
+  favelas_2 = read_excel("../data/refs/favelizacao_ref_2.xlsx")
 )
 ```
 
@@ -168,5 +170,60 @@ dados$piramide %>%
     fill="Gêneros",
     y="População"
   )
-
 ```
+# -- Analisando população residente em favelas --
+```{r}
+dados$favelas
+refs$favelas
+
+comparar_favelas = bind_rows(dados$favelas, refs$favelas)
+
+comparar_favelas %>%
+  filter(Situação=="Em favelas") %>%
+  group_by(`Recorte Geográfico`) %>%
+  ggplot(aes(x=`Recorte Geográfico`, 
+             y=Percentual, 
+             fill=`Recorte Geográfico`, 
+             label=paste0(Percentual, "%"))) +
+  geom_col() + 
+    geom_label(
+    size=3,
+    alpha=0,
+    label.size=0,
+    label.padding = unit(0.25, "lines"),
+    color="black",
+    family="sans",
+    fontface="bold",
+    nudge_y=-4
+  ) +
+  theme(
+    legend.position = "none"
+  ) + labs(
+    title="População residente em favelas por país (%)"
+  )
+```
+# -- Comparando favelização usando fonte alternativa --
+```{r}
+View(refs$favelas_2)
+filt_refs = refs$favelas_2 %>%
+  rename(
+    "País" = `Country or Territory Name...5`,
+    "Percentual" = `Proportion of urban population living in slums or informal settlements (%) (a)`,
+    "Ano" = `Data Reference Year`
+  ) %>%
+  select("País", "Percentual", "Ano") %>%
+  filter(País %in% c("Germany", "India", "Brazil", "Argentina")) %>%
+  mutate(
+    País = case_match(País,
+                      "Germany" ~ "Alemanha",
+                      "Brazil" ~ "Brasil",
+                      "Argentina" ~ "Argentina",
+                      "India" ~ "Índia"
+                      )
+  )
+
+filt_refs %>%
+  ggplot(aes(x=Ano, y=Percentual, color=País)) +
+  geom_line() + geom_point()
+```
+

@@ -8,6 +8,7 @@ Dados de referência retirados de:
 - https://theglobaleconomy.com/ (Alfabetização)
 - https://www.asahi.com/ajw/articles/16030478 (Envelhecimento no Japão)
 - https://www.bbc.com/portuguese/geral-47132888 (Expectativa de vida de homens e mulheres)
+- https://data.unhabitat.org/pages/housing-slums-and-informal-settlements (Favelização)
 
 ## *Stack*
 - R;
@@ -160,6 +161,54 @@ Dados de referência retirados de:
    Indo atrás de informações, o professor David Gems, do University College London, explicou
    que embriões masculinos morrem em um ritmo maior que os embriões femininos. O que é um dos
    vários fatores que ajudam a explicar a diferença de expectativa de vida.
+   
+6. **População residente em favelas**
+
+   Quando o assunto é a população que mora em favelas, entre os países de baixa-média renda,
+   o Brasil apresenta um percentual de ~8.07%, e quando comparado à países como Índia (~41.5%)
+   e África do Sul (~24.5%), é um percentual satisfatório.
+   
+   *!*: O percentual de residentes em favelas cresceu de ~6% da população para ~8.07% entre
+   os Censos de 2010 e 2022 (o que explica esse aumento? o método do IBGE mudou?).
+   
+   É importante dizer que estes países são apenas exemplos, e não representam a totalidade de 
+   países de renda baixa-média. 
+   
+   Da mesma forma, é interessante analisar que países desenvolvidos, como Alemanha e Japão
+   (utilizados como exemplos), têm a população residente em favelas em números aproximados
+   à 0%, o que mostra que países desenvolvidos tendem a ter mais soluções para manter esses
+   números baixos.
+   
+   Em poucos minutos de pesquisa, é possível achar possíveis motivos para poucas pessoas
+   residirem em favelas em países desenvolvidos. Podemos citar a a educação, que é
+   bastante acessível. E por causa disso, a população tende a ter maior consciência de 
+   direitos e qualificação.
+   
+   Paralelamente, o fator histórico é de suma importância. Países como Brasil e Índia não
+   tiveram um desenvolvimento gradual como países da Europa e Japão. Por exemplo, milhões de
+   brasileiros saíram dos campos para as cidades em poucas décadas, e como as cidades não
+   estavam prontas para receber tanta gente, favelas foram geradas.
+   
+   6.1 *Comparando favelização usando fonte alternativa*
+   
+   Utilizando uma fonte alternativa ao Censo feito pelo IBGE, dados levantados pela 
+   ONU-Habitat mostram números distintos aos do IBGE. Segundo a pesquisa da ONU-Habitat, 
+   aproximadamente ~14.8% da população brasileira reside em favelas (até 2016), uma diferença 
+   em torno de 6.73% em relação ao Censo 2022.
+   
+   É notável dizer que o método mudou entre os dois Censos (2010 e 2022), algumas comunidades 
+   antes ficavam de fora por não seguirem um critério técnico muito rígido de 2010.
+   
+   A ONU-Habitat, até 2016, registrou que o Brasil apresentava leve queda no percentual de
+   pessoas residindo em favelas, o oposto do Censo 2022, que registrou um aumento significativo.
+   
+   Não é possível alcançar o número neste momento, mas é plausível questionar: qual é o dado que 
+   mais se aproxima da realidade, tendo em vista que provavelmente foram usados dois métodos
+   diferentes?
+   
+   
+   
+
    
    
    
