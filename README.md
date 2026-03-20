@@ -168,7 +168,7 @@ Dados de referência retirados de:
    o Brasil apresenta um percentual de ~8.07%, e quando comparado à países como Índia (~41.5%)
    e África do Sul (~24.5%), é um percentual satisfatório.
    
-   *!*: O percentual de residentes em favelas cresceu de ~6% da população para ~8.07% entre
+   `!`: O percentual de residentes em favelas cresceu de ~6% da população para ~8.07% entre
    os Censos de 2010 e 2022 (o que explica esse aumento? o método do IBGE mudou?).
    
    É importante dizer que estes países são apenas exemplos, e não representam a totalidade de 
@@ -189,7 +189,7 @@ Dados de referência retirados de:
    brasileiros saíram dos campos para as cidades em poucas décadas, e como as cidades não
    estavam prontas para receber tanta gente, favelas foram geradas.
    
-   6.1 *Comparando favelização usando fonte alternativa*
+   6.1 **Comparando favelização usando fonte alternativa**
    
    Utilizando uma fonte alternativa ao Censo feito pelo IBGE, dados levantados pela 
    ONU-Habitat mostram números distintos aos do IBGE. Segundo a pesquisa da ONU-Habitat, 
