@@ -37,11 +37,22 @@ Dados de referência retirados de:
 ## *Considerações do tratamento dos dados*
 
 1. **Os dados vieram em ótimo estado**
+
    Por se tratar do IBGE, o principal provedor de informações geográficas e estatísticas do
    Brasil, os dados vieram muito bem formatados e claros, o que favorecerá a análise.
 
    Foram feitas verificações iniciais de estrutura, tipagem e consistência para garantir a
    confiabilidade. 
+   
+2. **Alteração de nomes de colunas para melhorar legibilidade**
+   
+   Optei por simplificar os nomes das colunas para melhor legibilidade do código.
+   
+3. **Mutate realizado antes do plot das pirâmides**
+
+   Realizando a ordenação dos nomes das colunas da pirâmide etária, foi percebido que o gráfico
+   ficava corretamente ordenado com o mutate sendo feito logo antes da realização do gráfico,
+   a ordenação, antes feita na pasta "treatment.Rmd", quebrava o gráfico.
 
 ## *Considerações da análise dos dados*
 
@@ -58,6 +69,19 @@ Dados de referência retirados de:
 
    É válido comentar que dentre os 10 nomes mais populares, há uma concentração masculina com 8 nomes,
    contra 2 nomes femininos (os nomes femininos são mais variados?). 
+   
+   1.1 **Os nomes podem ter relação com a religiosidade brasileira**
+   
+   Como esperado, o catolicismo é predominante no país, com aproximadamente 100 milhões de brasileiros
+   declarados católicos. Então, o fato da maioria dos nomes populares serem de origem religiosa não é por 
+   acaso.
+   
+   Logo atrás da religião católica, vem a religião evangélica com aproximadamente 47 milhões e 400 mil
+   brasileiros declarados. Fazendo uma breve pesquisa, nomes bem populares do Brasil como "David", "Gabriel" 
+   e"Ana" vêm do envangelho, e também é destacado que, com base no Censo 2022, pessoas sem religião são 
+   minoria no Brasil.
+   
+   Existem bastantes evidências para argumentar que a religião é muito presente na sociedade brasileira.
 
 2. **Alfabetização**
 
@@ -145,7 +169,7 @@ Dados de referência retirados de:
    `Informação:` Os dados indicam predominância feminina na população total.
    
    `Importante:` A ‘ponta’ da barra indica qual gênero possui maior valor naquela faixa etária. 
-   Quando a barra feminina (vermelha) ultrapassa a masculina (azul), há predominância feminina,
+   Quando a barra feminina (azul) ultrapassa a masculina (vermelha), há predominância feminina,
    e vice-versa.
    
    Tendo isto em mente, é de extrema relevância apontar que, a partir de 25-29 anos o gênero
@@ -205,7 +229,8 @@ Dados de referência retirados de:
    Não é possível alcançar o número neste momento, mas é plausível questionar: qual é o dado que 
    mais se aproxima da realidade, tendo em vista que provavelmente foram usados dois métodos
    diferentes?
-   
+  
+
    
    
 

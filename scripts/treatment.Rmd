@@ -1,0 +1,179 @@
+# -- Instalando e carregando o Tidyverse --
+```{r}
+# install.packages("tidyverse")
+library(tidyverse)
+library(readxl)
+```
+
+# -- Pegando os dados da população brasileira dos arquivos .csv --
+```{r}
+dados = list(
+  nomes = read_csv2("../data/original/censo_2022_nomes_populares.csv"),
+  religiao = read_csv2("../data/original/censo_2022_religiao.csv"),
+  alfabetizacao = read_csv2("../data/original/censo_2022_alfabetizacao.csv"),
+  deficiencias = read_csv2("../data/original/censo_2022_deficiencia_e_autismo.csv"),
+  crescimento = read_csv2("../data/original/censo_2022_crescimento_pop.csv"),
+  sexo = read_csv2("../data/original/censo_2022_populacao_sexo.csv"),
+  piramide = read_csv2("../data/original/censo_2022_piramide_etaria.csv"),
+  favelas = read_csv2("../data/original/censo_2022_populacao_favelas.csv")
+)
+```
+
+# -- Dados de referência --
+```{r}
+refs = list(
+  alfabetizacao = read_csv("../data/refs/alfabetizacao_paises.csv"),
+  deficiencia = read_csv2("../data/refs/censo_2010_deficiencia.csv"),
+  crescimento = read_csv2("../data/refs/crescimento_pop.csv"),
+  favelas = read_csv2("../data/refs/populacao_favelas.csv"),
+  favelas_2 = read_excel("../data/refs/favelizacao_ref_2.xlsx")
+)
+```
+
+# -- Confirmando tipos --
+```{r}
+glimpse(dados$deficiencias)
+glimpse(dados$alfabetizacao)
+glimpse(dados$crescimento)
+glimpse(dados$nomes)
+glimpse(dados$cor_raca)
+glimpse(dados$religiao)
+glimpse(dados$piramide)
+glimpse(dados$sexo)
+glimpse(dados$favelas)
+```
+
+# -- Analisando dados de nomes brasileiros --
+```{r}
+dados$nomes
+```
+
+# -- Comparando religiosidade -- 
+```{r}
+religiao_tratado = dados$religiao %>%
+  filter(Religião != "Não sabe ou sem declaração") %>%
+  mutate(
+    Religião = case_match(Religião,
+                          "Católica apostólica romana" ~ "Católica",
+                          "Evangélicas" ~ "Evangélica",
+                          "Demais religiosidades" ~ "Outras religiões",
+                          "Sem religião" ~ "Sem religião")
+    )
+religiao_tratado
+```
+
+# -- Analisando dados de alfabetização --
+```{r}
+alfabetizacao_tratado = dados$alfabetizacao %>%
+  rename("Quantidade" = `População(pessoas)`,
+         "País" = `Recorte Geográfico`)
+ 
+ref_alfabetizacao_tratado = refs$alfabetizacao %>%
+  rename("Quantidade" = `População(pessoas)`,
+         "País" = `Recorte Geográfico`)
+
+comparacao_alfabetizacao = bind_rows(alfabetizacao_tratado %>%
+                                       filter(Situação == "Alfabetizados"), ref_alfabetizacao_tratado)
+
+alfabetizacao_tratado
+ref_alfabetizacao_tratado
+comparacao_alfabetizacao
+```
+
+# -- Comparando percentual de pessoas com deficiência do Censo 2010 vs 2022 --
+```{r}
+dados$deficiencias
+refs$deficiencia
+```
+
+# -- Analisando dados de crescimento populacional --
+```{r}
+unique(dados$crescimento$`Ano da pesquisa`)
+
+crescimento_tratado = dados$crescimento %>%
+  rename("Ano" = `Ano da pesquisa`,
+         "Quantidade" = "População(pessoas)",
+         "País" = `Recorte Geográfico`)
+
+ref_crescimento_tratado = refs$crescimento %>%
+  rename("Ano" = `Ano da pesquisa`,
+         "Quantidade" = "População(pessoas)",
+         "País" = `Recorte Geográfico`)
+
+comparacao_crescimento = bind_rows(crescimento_tratado, ref_crescimento_tratado)
+  
+
+crescimento_tratado
+ref_crescimento_tratado
+comparacao_crescimento
+```
+
+## -- Analisando sexos/pirâmide etária --
+```{r}
+dados$sexo
+piramide_tratado = dados$piramide %>%
+  rename(
+    "Grupo" = `Grupo de idade`,
+    "Feminino" = "População feminina(pessoas)",
+    "Masculino" = "População masculina(pessoas)"
+  ) %>%
+  select(Grupo, Masculino, Feminino)
+piramide_tratado
+  
+```
+# -- Analisando população residente em favelas --
+```{r}
+favelas_tratado = dados$favelas %>%
+  rename("Quantidade" = "População(pessoas)",
+         "País" = `Recorte Geográfico`)
+
+ref_favelas_tratado = refs$favelas %>%
+  rename("Quantidade" = "População(pessoas)",
+         "País" = `Recorte Geográfico`)
+
+comparar_favelas = bind_rows(favelas_tratado, ref_favelas_tratado)
+
+favelas_tratado
+ref_favelas_tratado
+comparar_favelas
+```
+# -- Comparando favelização usando fonte alternativa --
+```{r}
+favelas_alternativo_tratado = refs$favelas_2 %>%
+  rename(
+    "País" = `Country or Territory Name...5`,
+    "Percentual" = `Proportion of urban population living in slums or informal settlements (%) (a)`,
+    "Ano" = `Data Reference Year`
+  ) %>%
+  select("País", "Percentual", "Ano") %>%
+  filter(País %in% c("Germany", "India", "Brazil", "Argentina")) %>%
+  mutate(
+    País = case_match(País,
+                      "Germany" ~ "Alemanha",
+                      "Brazil" ~ "Brasil",
+                      "Argentina" ~ "Argentina",
+                      "India" ~ "Índia"
+                      )
+  )
+
+favelas_alternativo_tratado
+```
+
+## -- Salvando os dados tratados --
+```{r}
+write_csv(religiao_tratado, "../data/clean/religiao_tratado.csv")
+
+write_csv(alfabetizacao_tratado, "../data/clean/alfabetizacao_tratado.csv")
+write_csv(comparacao_alfabetizacao, "../data/clean/comparacao_alfabetizacao.csv")
+
+write_csv(crescimento_tratado, "../data/clean/crescimento_tratado.csv")
+write_csv(comparacao_crescimento, "../data/clean/comparacao_crescimento.csv")
+
+write_csv(piramide_tratado, "../data/clean/piramide_tratado.csv")
+
+write_csv(favelas_tratado, "../data/clean/favelas_tratado.csv")
+write_csv(comparar_favelas, "../data/clean/comparar_favelas.csv")
+write_csv(favelas_alternativo_tratado, "../data/clean/favelas_alternativo_tratado.csv")
+```
+
+

@@ -2,49 +2,31 @@
 ```{r}
 # install.packages("tidyverse")
 library(tidyverse)
-library(readxl)
 # install.packages("scales")
 library(scales)
 ```
 
-# -- Pegando os dados da população brasileira dos arquivos .csv --
+# -- Capturando os dados tratados --
 ```{r}
 dados = list(
-  deficiencias = read_csv2("../data/original/censo_2022_deficiencia_e_autismo.csv"),
-  alfabetizacao = read_csv2("../data/original/censo_2022_alfabetizacao.csv"),
-  crescimento = read_csv2("../data/original/censo_2022_crescimento_pop.csv"),
   nomes = read_csv2("../data/original/censo_2022_nomes_populares.csv"),
-  cor_raca = read_csv2("../data/original/censo_2022_população_cor_raca.csv"),
-  religiao = read_csv2("../data/original/censo_2022_religiao.csv"),
-  piramide = read_csv2("../data/original/censo_2022_piramide_etaria.csv"),
+  religiao = read_csv("../data/clean/religiao_tratado.csv"),
+  alfabetizacao = read_csv("../data/clean/alfabetizacao_tratado.csv"),
+  crescimento = read_csv("../data/clean/crescimento_tratado.csv"),
   sexo = read_csv2("../data/original/censo_2022_populacao_sexo.csv"),
-  favelas = read_csv2("../data/original/censo_2022_populacao_favelas.csv")
-)
+  piramide = read_csv("../data/clean/piramide_tratado.csv"),
+  favelas = read_csv("../data/clean/favelas_tratado.csv")
+  )
 ```
 
-# -- Dados de referência --
+# -- Capturando as comparações utilizadas --
 ```{r}
-refs = list(
-  alfabetizacao = read_csv("../data/refs/alfabetizacao_paises.csv"),
-  deficiencia = read_csv2("../data/refs/censo_2010_deficiencia.csv"),
-  crescimento = read_csv2("../data/refs/crescimento_pop.csv"),
-  favelas = read_csv2("../data/refs/populacao_favelas.csv"),
-  favelas_2 = read_excel("../data/refs/favelizacao_ref_2.xlsx")
+comp = list(
+  alfabetizacao = read_csv("../data/clean/comparacao_alfabetizacao.csv"),
+  crescimento = read_csv("../data/clean/comparacao_crescimento.csv"),
+  favelas = read_csv("../data/clean/comparar_favelas.csv"),
+  favelas_alternativo = read_csv("../data/clean/favelas_alternativo_tratado.csv")
 )
-```
-
-# -- Confirmando tipos --
-```{r}
-glimpse(dados$deficiencias)
-glimpse(dados$alfabetizacao)
-glimpse(dados$crescimento)
-glimpse(dados$nomes)
-glimpse(dados$transporte)
-glimpse(dados$cor_raca)
-glimpse(dados$religiao)
-glimpse(dados$piramide)
-glimpse(dados$sexo)
-glimpse(dados$favelas)
 ```
 
 # -- Analisando nomes mais populares --
@@ -61,6 +43,18 @@ plot_nomes_populares = dados$nomes %>%
   ) + theme(
     legend.position = "none"
   )
+plot_nomes_populares
+```
+
+# -- Plotando religiosidade --
+```{r}
+plot_religiosidade = dados$religiao %>%
+  ggplot(aes(x=reorder(Religião, `População (pessoas)`),
+             y=`População (pessoas)`, fill=Religião)) +
+  geom_col() + scale_y_continuous(
+    labels = scales::label_number(big.mark = ".", decimal.mark = ",")) + coord_flip() + theme(legend.position="none")
+
+plot_religiosidade
 ```
 
 # -- Analisando alfabetização --
@@ -73,16 +67,9 @@ plot_alfabetizados = dados$alfabetizacao %>%
     title = "Percentual de alfabetizados no Brasil"
   )
 
-alfabetizados_brasil <- dados$alfabetizacao %>%
-  filter(Situação == "Alfabetizados",
-         `Recorte Geográfico` == "Brasil") %>%
-  select(Percentual, `Recorte Geográfico`)
-
-comparacao = bind_rows(alfabetizados_brasil, refs$alfabetizacao)
-
-comparacao %>%
-  ggplot(aes(x=reorder(`Recorte Geográfico`, Percentual), y=Percentual,
-             fill=`Recorte Geográfico`,
+plot_comp_alfabetizados = comp$alfabetizacao %>%
+  ggplot(aes(x=reorder(País, Percentual), y=Percentual,
+             fill=País,
              label=paste0(Percentual, "%"))) +
   geom_bar(stat="identity") +
   geom_label(
@@ -105,21 +92,15 @@ comparacao %>%
   theme(
     legend.position="none"
   ) 
+
+plot_alfabetizados
+plot_comp_alfabetizados
 ```
 
-# -- Comparando percentual de pessoas com deficiência do Censo 2010 vs 2022 --
+# -- Crescimento --
 ```{r}
-dados$deficiencias
-refs$deficiencia
-```
-
-# -- Analisando crescimento populacional --
-```{r}
-
-unique(dados$crescimento$`Ano da pesquisa`)
-
-dados$crescimento %>%
-  ggplot(aes(x=`Ano da pesquisa`,y=`População(pessoas)`, group=1)) +
+plot_crescimento_brasil = dados$crescimento %>%
+  ggplot(aes(x=Ano,y=Quantidade, group=1)) +
   geom_line(linewidth = 1) +
   geom_point(size = 2) +
   scale_y_continuous(
@@ -132,32 +113,35 @@ dados$crescimento %>%
   ) +
   theme_minimal()
 
-comparacao_cresc = bind_rows(dados$crescimento, refs$crescimento)
 
-crescimento_linhas = comparacao_cresc %>%
-  ggplot(aes(x=`Ano da pesquisa`, y=`População(pessoas)`,color=`Recorte Geográfico`)) +
+plot_comp_crescimento = comp$crescimento %>%
+  ggplot(aes(x=Ano, y=Quantidade,color=País)) +
   geom_line() + geom_point() +
   scale_y_continuous(
     labels = scales::label_number(big.mark = ".", decimal.mark = ",") 
   ) + theme_minimal()
 
-crescimento_linhas
+plot_crescimento_brasil
+plot_comp_crescimento
 ```
+
 ## -- Analisando sexos/pirâmide etária --
 ```{r}
-dados$sexo %>%
+plot_sexo = dados$sexo %>%
   ggplot(aes(x=Sexo, y=`População(pessoas)`, fill=Sexo)) +
   geom_col() +
   scale_y_continuous(
     labels = scales::label_number(big.mark = ".", decimal.mark = ",") 
   )
-dados$piramide %>%
+
+plot_piramide = dados$piramide %>%
   mutate(
-    `Grupo de idade` = fct_rev(fct_inorder(`Grupo de idade`))
+    ordem = as.integer(str_extract(Grupo, "^\\d+")),
+    Grupo = fct_reorder(Grupo, ordem)
     ) %>%
-  ggplot(aes(x=`Grupo de idade`)) +
-  geom_col(aes(y=`População feminina(pessoas)`, fill="Feminino"), alpha=0.5) + 
-  geom_col(aes(y=`População masculina(pessoas)`, fill="Masculino"), alpha=0.5) + 
+  ggplot(aes(x=Grupo)) +
+  geom_col(aes(y=Feminino, fill="Feminino"), alpha=0.5) + 
+  geom_col(aes(y=Masculino, fill="Masculino"), alpha=0.5) + 
   scale_y_continuous(
     labels = scales::label_number(big.mark = ".", decimal.mark = ",") 
   ) + 
@@ -170,20 +154,22 @@ dados$piramide %>%
     fill="Gêneros",
     y="População"
   )
+
+plot_sexo
+plot_piramide
 ```
+
 # -- Analisando população residente em favelas --
 ```{r}
 dados$favelas
-refs$favelas
+comp$favelas
 
-comparar_favelas = bind_rows(dados$favelas, refs$favelas)
-
-comparar_favelas %>%
+plot_favelas = comp$favelas %>%
   filter(Situação=="Em favelas") %>%
-  group_by(`Recorte Geográfico`) %>%
-  ggplot(aes(x=`Recorte Geográfico`, 
+  group_by(País) %>%
+  ggplot(aes(x=País, 
              y=Percentual, 
-             fill=`Recorte Geográfico`, 
+             fill=País, 
              label=paste0(Percentual, "%"))) +
   geom_col() + 
     geom_label(
@@ -201,29 +187,15 @@ comparar_favelas %>%
   ) + labs(
     title="População residente em favelas por país (%)"
   )
+
+plot_favelas
 ```
+
 # -- Comparando favelização usando fonte alternativa --
 ```{r}
-View(refs$favelas_2)
-filt_refs = refs$favelas_2 %>%
-  rename(
-    "País" = `Country or Territory Name...5`,
-    "Percentual" = `Proportion of urban population living in slums or informal settlements (%) (a)`,
-    "Ano" = `Data Reference Year`
-  ) %>%
-  select("País", "Percentual", "Ano") %>%
-  filter(País %in% c("Germany", "India", "Brazil", "Argentina")) %>%
-  mutate(
-    País = case_match(País,
-                      "Germany" ~ "Alemanha",
-                      "Brazil" ~ "Brasil",
-                      "Argentina" ~ "Argentina",
-                      "India" ~ "Índia"
-                      )
-  )
-
-filt_refs %>%
+plot_favelas_alternativo = comp$favelas_alternativo %>%
   ggplot(aes(x=Ano, y=Percentual, color=País)) +
   geom_line() + geom_point()
-```
 
+plot_favelas_alternativo
+```
