@@ -32,6 +32,8 @@ Dados de referência retirados de:
 ## *Estrutura*
 
 - `data/original`: Dados originais;
+- `data/refs`: Dados de referência;
+- `data/clean`: Dados tratados;
 - `scripts/treatment.Rmd`: Script responsável pelo tratamento dos dados;
 - `scripts/plots.Rmd`: Script responsável pela geração de gráficos.
 
