@@ -29,6 +29,19 @@ comp = list(
 )
 ```
 
+# -- Preparando função para salvar gráficos --
+```{r}
+salvar_plot = function(plot, nome, width=8, height=5, dpi=300) {
+  ggsave(
+    filename = paste0("../plots/", nome, ".png"),
+    plot = plot,
+    width = width,
+    height = height,
+    dpi = dpi
+  )
+}
+```
+
 # -- Analisando nomes mais populares --
 ```{r}
 plot_nomes_populares = dados$nomes %>%
@@ -43,6 +56,9 @@ plot_nomes_populares = dados$nomes %>%
   ) + theme(
     legend.position = "none"
   )
+
+salvar_plot(plot_nomes_populares, "plot_nomes_populares")
+
 plot_nomes_populares
 ```
 
@@ -53,6 +69,8 @@ plot_religiosidade = dados$religiao %>%
              y=`População (pessoas)`, fill=Religião)) +
   geom_col() + scale_y_continuous(
     labels = scales::label_number(big.mark = ".", decimal.mark = ",")) + coord_flip() + theme(legend.position="none")
+
+salvar_plot(plot_religiosidade, "plot_religiosidade")
 
 plot_religiosidade
 ```
@@ -93,6 +111,9 @@ plot_comp_alfabetizados = comp$alfabetizacao %>%
     legend.position="none"
   ) 
 
+salvar_plot(plot_alfabetizados, "plot_alfabetizados")
+salvar_plot(plot_comp_alfabetizados, "plot_comp_alfabetizados")
+
 plot_alfabetizados
 plot_comp_alfabetizados
 ```
@@ -120,6 +141,9 @@ plot_comp_crescimento = comp$crescimento %>%
   scale_y_continuous(
     labels = scales::label_number(big.mark = ".", decimal.mark = ",") 
   ) + theme_minimal()
+
+salvar_plot(plot_crescimento_brasil, "plot_crescimento_brasil")
+salvar_plot(plot_comp_crescimento, "plot_comp_crescimento")
 
 plot_crescimento_brasil
 plot_comp_crescimento
@@ -155,6 +179,9 @@ plot_piramide = dados$piramide %>%
     y="População"
   )
 
+salvar_plot(plot_sexo, "plot_sexo")
+salvar_plot(plot_piramide, "plot_piramide")
+
 plot_sexo
 plot_piramide
 ```
@@ -188,6 +215,8 @@ plot_favelas = comp$favelas %>%
     title="População residente em favelas por país (%)"
   )
 
+salvar_plot(plot_favelas, "plot_favelas")
+
 plot_favelas
 ```
 
@@ -196,6 +225,8 @@ plot_favelas
 plot_favelas_alternativo = comp$favelas_alternativo %>%
   ggplot(aes(x=Ano, y=Percentual, color=País)) +
   geom_line() + geom_point()
+
+salvar_plot(plot_favelas_alternativo, "plot_favelas_alternativo")
 
 plot_favelas_alternativo
 ```
