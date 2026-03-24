@@ -119,7 +119,7 @@ Dados de referência retirados de:
    Porém, buscando dados do Censo feito em 2010, é possível notar algo com potencial
    relevância: 23.9% dos brasileiros se declararam deficientes de alguma forma. É 
    evidente que uma diminuição de 16.6% é fora da realidade, em 10 anos é muito
-   improvável que o percentual tenha decaído drasticamente.
+   improvável que o percentual tenha decaído drasticamente. 
    
    Buscando mais informações sobre os Censos de 2010 e 2022, o que explica essa
    diferença é o método que foi utilizado.
@@ -233,13 +233,21 @@ Dados de referência retirados de:
    Não é possível alcançar o número neste momento, mas é plausível questionar: qual é o dado que 
    mais se aproxima da realidade, tendo em vista que provavelmente foram usados dois métodos
    diferentes?
-  
+   
+7. **Conclusão**
 
+   O Brasil retratado pelo Censo 2022 é um país ainda em desenvolvimento, com pontos positivos e
+   negativos, mas com muitas problemáticas a serem tratadas. Primordialmente, deve-se estabelecer
+   um método fixo de análise, para não haver discrepância entre resultados diferentes, como por 
+   exemplo, no percentual de deficientes (23.9% em 2010 contra 7.3% em 2022) e favelização (6% em 
+   2010 contra 8.07% em 2022 contra 14.8% em 2022 pela ONU-Habitat).
    
+   Neste projeto, pode-se ver que dados sem contexto podem enganar, sendo evidenciado por fontes
+   externas. Para uma análise estruturada e fugindo de enviesamento, a busca pelo conhecimento, 
+   interpretação e o questionamento são de suma importância, como visto nos tópicos anteriores. 
    
-
-   
-   
+   Por fim, comento que O ponto principal deste projeto, e tão importante quanto absorver a 
+   informação, foi explicar e comentar sobre o conhecimento obtido neste estudo.
    
    
    
