@@ -27,7 +27,8 @@ Dados de referência retirados de:
 ## *Execução*
 
 - Clonagem do repositório;
-- Executar `scripts/analysis.Rmd`.
+- Executar `scripts/treatment.Rmd`;
+- Executar `scripts/plots.Rmd`.
 
 ## *Estrutura*
 
@@ -242,12 +243,16 @@ Dados de referência retirados de:
    exemplo, no percentual de deficientes (23.9% em 2010 contra 7.3% em 2022) e favelização (6% em 
    2010 contra 8.07% em 2022 contra 14.8% em 2022 pela ONU-Habitat).
    
+   Culturalmente, o Brasil demonstra forte influência religiosa, demograficamente está em processo 
+   de envelhecimento, e socialmente ainda enfrenta desafios históricos de urbanização e desigualdade.
+   
    Neste projeto, pode-se ver que dados sem contexto podem enganar, sendo evidenciado por fontes
    externas. Para uma análise estruturada e fugindo de enviesamento, a busca pelo conhecimento, 
    interpretação e o questionamento são de suma importância, como visto nos tópicos anteriores. 
    
-   Por fim, comento que O ponto principal deste projeto, e tão importante quanto absorver a 
-   informação, foi explicar e comentar sobre o conhecimento obtido neste estudo.
+   Por fim, comento que o ponto principal deste projeto, e tão importante quanto absorver a 
+   informação, foi explicar e comentar sobre o conhecimento obtido neste estudo, com o
+   objetivo de registrar da forma mais clara possível o que foi visto.
    
    
    
