@@ -146,13 +146,10 @@ favelas_alternativo_tratado = refs$favelas_2 %>%
     "Ano" = `Data Reference Year`
   ) %>%
   select("País", "Percentual", "Ano") %>%
-  filter(País %in% c("Germany", "India", "Brazil", "Argentina")) %>%
+  filter(País %in% c("Brazil")) %>%
   mutate(
     País = case_match(País,
-                      "Germany" ~ "Alemanha",
-                      "Brazil" ~ "Brasil",
-                      "Argentina" ~ "Argentina",
-                      "India" ~ "Índia"
+                      "Brazil" ~ "Brasil"
                       )
   )
 
